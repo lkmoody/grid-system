@@ -1,10 +1,22 @@
+﻿/* 
+    ------------------- Code Monkey -------------------
+
+    Thank you for downloading this package
+    I hope you find it useful in your projects
+    If you have any questions let me know
+    Cheers!
+
+               unitycodemonkey.com
+    --------------------------------------------------
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HeatMapGenericVisual : MonoBehaviour {
+public class PathfindingVisual : MonoBehaviour {
 
-    private Grid<HeatMapGridObject> grid;
+    private Grid<PathNode> grid;
     private Mesh mesh;
     private bool updateMesh;
 
@@ -13,26 +25,26 @@ public class HeatMapGenericVisual : MonoBehaviour {
         GetComponent<MeshFilter>().mesh = mesh;
     }
 
-    public void SetGrid(Grid<HeatMapGridObject> grid) {
+    public void SetGrid(Grid<PathNode> grid) {
         this.grid = grid;
-        UpdateHeatMapVisual();
+        UpdateVisual();
 
         grid.OnGridObjectChanged += Grid_OnGridObjectChanged;
     }
 
-    private void Grid_OnGridObjectChanged(object sender, Grid<HeatMapGridObject>.OnGridObjectChangedEventArgs e) {
-        UpdateHeatMapVisual();
+    private void Grid_OnGridObjectChanged(object sender, Grid<PathNode>.OnGridObjectChangedEventArgs e) {
+        UpdateVisual();
         updateMesh = true;
     }
 
     private void LateUpdate() {
         if (updateMesh) {
             updateMesh = false;
-            UpdateHeatMapVisual();
+            UpdateVisual();
         }
     }
 
-    private void UpdateHeatMapVisual() {
+    private void UpdateVisual() {
         MeshUtils.CreateEmptyMeshArrays(grid.GetWidth() * grid.GetHeight(), out Vector3[] vertices, out Vector2[] uv, out int[] triangles);
 
         for (int x = 0; x < grid.GetWidth(); x++) {
@@ -40,10 +52,13 @@ public class HeatMapGenericVisual : MonoBehaviour {
                 int index = x * grid.GetHeight() + y;
                 Vector3 quadSize = new Vector3(1, 1) * grid.GetCellSize();
 
-                HeatMapGridObject gridObject = grid.GetGridObject(x, y);
-                float gridValueNormalized = gridObject.GetValueNormalized();
-                Vector2 gridValueUV = new Vector2(gridValueNormalized, 0f);
-                MeshUtils.AddToMeshArrays(vertices, uv, triangles, index, grid.GetWorldPosition(x, y) + quadSize * .5f, 0f, quadSize, gridValueUV, gridValueUV);
+                PathNode pathNode = grid.GetGridObject(x, y);
+
+                if (pathNode.isWalkable) {
+                    quadSize = Vector3.zero;
+                }
+
+                MeshUtils.AddToMeshArrays(vertices, uv, triangles, index, grid.GetWorldPosition(x, y) + quadSize * .5f, 0f, quadSize, Vector2.zero, Vector2.zero);
             }
         }
 
@@ -53,3 +68,4 @@ public class HeatMapGenericVisual : MonoBehaviour {
     }
 
 }
+

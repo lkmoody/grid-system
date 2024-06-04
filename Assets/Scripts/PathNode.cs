@@ -21,6 +21,11 @@ public class PathNode {
         isWalkable = true;
     }
 
+    public void SetIsWalkable(bool value) {
+        isWalkable = value;
+        grid.TriggerGridObjectChanged(x, y);
+    }
+
     public void CalculateFCost() {
         fCost = gCost + hCost;
     }

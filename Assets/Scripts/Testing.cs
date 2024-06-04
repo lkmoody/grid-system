@@ -6,37 +6,37 @@ using UnityEngine.UIElements;
 
 public class Testing : MonoBehaviour {
 
-    [SerializeField] private HeatMapVisual heatMapVisual;
-    [SerializeField] private HeatMapBoolVisual heatMapBoolVisual;
+    //[SerializeField] private HeatMapVisual heatMapVisual;
+    //[SerializeField] private HeatMapBoolVisual heatMapBoolVisual;
     [SerializeField] private HeatMapGenericVisual heatMapGenericVisual;
     private Grid<HeatMapGridObject> grid;
     private Grid<StringGridObject> stringGrid;
 
     private void Start() {
-        // grid = new Grid<HeatMapGridObject>(20, 10, 8f, Vector3.zero, (Grid<HeatMapGridObject> g, int x, int y) => new HeatMapGridObject(g, x, y));
-        stringGrid = new Grid<StringGridObject>(20, 10, 8f, Vector3.zero, (Grid<StringGridObject> g, int x, int y) => new StringGridObject(g, x, y));
+        grid = new Grid<HeatMapGridObject>(20, 10, 8f, Vector3.zero, (Grid<HeatMapGridObject> g, int x, int y) => new HeatMapGridObject(g, x, y));
+        //stringGrid = new Grid<StringGridObject>(20, 10, 8f, Vector3.zero, (Grid<StringGridObject> g, int x, int y) => new StringGridObject(g, x, y));
 
         //heatMapVisual.SetGrid(grid);
         // heatMapBoolVisual.SetGrid(grid);
-        // heatMapGenericVisual.SetGrid(grid);
+        heatMapGenericVisual.SetGrid(grid);
     }
 
     private void Update() {
         Vector3 position = UtilsClass.GetMouseWorldPosition();
-        // if (Input.GetMouseButtonDown(0)) {
-        //     HeatMapGridObject heatMapGridObject = grid.GetGridObject(position);
-        //     if(heatMapGridObject != null) {
-        //         heatMapGridObject.AddValue(5);
-        //     }
-        // }
+        if (Input.GetMouseButtonDown(0)) {
+            HeatMapGridObject heatMapGridObject = grid.GetGridObject(position);
+            if(heatMapGridObject != null) {
+                heatMapGridObject.AddValue(5);
+            }
+        }
 
-        if(Input.GetKeyDown(KeyCode.A)) { stringGrid.GetGridObject(position).AddLetter("A"); }
-        if(Input.GetKeyDown(KeyCode.B)) { stringGrid.GetGridObject(position).AddLetter("B"); }
-        if(Input.GetKeyDown(KeyCode.C)) { stringGrid.GetGridObject(position).AddLetter("C"); }
+        // if(Input.GetKeyDown(KeyCode.A)) { stringGrid.GetGridObject(position).AddLetter("A"); }
+        // if(Input.GetKeyDown(KeyCode.B)) { stringGrid.GetGridObject(position).AddLetter("B"); }
+        // if(Input.GetKeyDown(KeyCode.C)) { stringGrid.GetGridObject(position).AddLetter("C"); }
 
-        if(Input.GetKeyDown(KeyCode.Alpha1)) { stringGrid.GetGridObject(position).AddNumber("1"); }
-        if(Input.GetKeyDown(KeyCode.Alpha2)) { stringGrid.GetGridObject(position).AddNumber("2"); }
-        if(Input.GetKeyDown(KeyCode.Alpha3)) { stringGrid.GetGridObject(position).AddNumber("3"); }
+        // if(Input.GetKeyDown(KeyCode.Alpha1)) { stringGrid.GetGridObject(position).AddNumber("1"); }
+        // if(Input.GetKeyDown(KeyCode.Alpha2)) { stringGrid.GetGridObject(position).AddNumber("2"); }
+        // if(Input.GetKeyDown(KeyCode.Alpha3)) { stringGrid.GetGridObject(position).AddNumber("3"); }
     }
 }
 
